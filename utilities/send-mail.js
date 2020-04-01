@@ -48,6 +48,8 @@ exports.notice = (comment) => {
     };
     
     let noticeSCKEY = process.env.SCKEY || null;
+    let noticeTELEGRAM = process.env.IS_TELEGRAM || null;
+    let noticeSMS = process.env.IS_SMS || null;
     if ( noticeSCKEY != null ) {
         let pasgURL = process.env.SITE_URL + comment.get('url');
         let notifyContents = "原文地址：[" + pasgURL + "](" + pasgURL + ") \r\n\r\n" + 
@@ -65,6 +67,46 @@ exports.notice = (comment) => {
         }, function(error, response, body) {
             if (!error && response.statusCode == 200)
                 console.log("SERVER酱通知发送成功: %s", response.statusCode);
+        });
+    }
+    
+    if ( noticeTELEGRAM != null ) {
+        let pasgURL = process.env.SITE_URL + comment.get('url');
+        let notifyContents = "原文地址：[" + pasgURL + "](" + pasgURL + ") \r\n\r\n" + 
+            "评论者昵称：" + comment.get('nick') + "\r\n\r\n" + 
+            "评论者邮箱：" + comment.get('mail') + "\r\n\r\n" + 
+            "原文章URI：" + comment.get('url') + "\r\n\r\n" + 
+            "评论内容：" + "\r\n> " + comment.get('comment') + "\r\n\r\n" +
+            "管理后台：[" + process.env.ADMIN_URL + "](" + process.env.ADMIN_URL + ") \r\n";
+        request.post({
+            url: 'https://push.ifking.cn/telegram/tg.php',
+            form: {
+                text: '你的博客有新的评论啦',
+                desp: notifyContents
+            }
+        }, function(error, response, body) {
+            if (!error && response.statusCode == 200)
+                console.log("Telegram通知发送成功: %s", response.statusCode);
+        });
+    }
+    
+    if ( noticeSMS != null ) {
+        let pasgURL = process.env.SITE_URL + comment.get('url');
+        let notifyContents = "原文地址：[" + pasgURL + "](" + pasgURL + ") \r\n\r\n" + 
+            "评论者昵称：" + comment.get('nick') + "\r\n\r\n" + 
+            "评论者邮箱：" + comment.get('mail') + "\r\n\r\n" + 
+            "原文章URI：" + comment.get('url') + "\r\n\r\n" + 
+            "评论内容：" + "\r\n> " + comment.get('comment') + "\r\n\r\n" +
+            "管理后台：[" + process.env.ADMIN_URL + "](" + process.env.ADMIN_URL + ") \r\n";
+        request.post({
+            url: 'https://push.ifking.cn/sms/sms.php',
+            form: {
+                text: '你的博客有新的评论啦',
+                desp: notifyContents
+            }
+        }, function(error, response, body) {
+            if (!error && response.statusCode == 200)
+                console.log("短信通知发送成功: %s", response.statusCode);
         });
     }
 
