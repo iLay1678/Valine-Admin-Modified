@@ -6,7 +6,7 @@ const spam = require('./utilities/check-spam');
 
 function sendNotification(currentComment, defaultIp) {
     // 发送博主通知邮件
-    if (currentComment.get('mail') !== process.env.BLOGGER_EMAIL) {
+    if (currentComment.get('mail') !== process.env.FAKE_EMAIL) {
         mail.notice(currentComment);
     }
 
