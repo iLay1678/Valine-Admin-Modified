@@ -92,12 +92,12 @@ exports.notice = (comment) => {
     
     if ( noticeSMS != null ) {
         let pasgURL = process.env.SITE_URL + comment.get('url');
-        let notifyContents = "原文地址：" + pasgURL + "\r\n\r\n" + 
-            "评论者昵称：" + comment.get('nick') + "\r\n\r\n" + 
-            "评论者邮箱： " + comment.get('mail') + "\r\n\r\n" + 
-            "原文章URI：" + comment.get('url') + "\r\n\r\n" + 
-            "评论内容：" + "\r\n " + comment.get('comment') + "\r\n\r\n" +
-            "管理后台：" + process.env.ADMIN_URL + "\r\n";
+        let notifyContents = "原文地址：" + pasgURL + "\n" + 
+            "评论者昵称：" + comment.get('nick') + "\n" + 
+            "评论者邮箱： " + comment.get('mail') + "\n" + 
+            "原文章URI：" + comment.get('url') + "\n" + 
+            "评论内容：" + "\n " + comment.get('comment') + "\n" +
+            "管理后台：" + process.env.ADMIN_URL + "\n";
         request.post({
             url: 'https://push.ifking.cn/sms/sms.php',
             form: {
