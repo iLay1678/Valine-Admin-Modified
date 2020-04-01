@@ -72,12 +72,12 @@ exports.notice = (comment) => {
     
     if ( noticeTELEGRAM != null ) {
         let pasgURL = process.env.SITE_URL + comment.get('url');
-        let notifyContents = "原文地址：[" + pasgURL + "](" + pasgURL + ") \r\n\r\n" + 
+        let notifyContents = "原文地址：" + pasgURL + "\r\n\r\n" + 
             "评论者昵称：" + comment.get('nick') + "\r\n\r\n" + 
-            "评论者邮箱：" + comment.get('mail') + "\r\n\r\n" + 
+            "评论者邮箱： " + comment.get('mail') + "\r\n\r\n" + 
             "原文章URI：" + comment.get('url') + "\r\n\r\n" + 
-            "评论内容：" + "\r\n> " + comment.get('comment') + "\r\n\r\n" +
-            "管理后台：[" + process.env.ADMIN_URL + "](" + process.env.ADMIN_URL + ") \r\n";
+            "评论内容：" + "\r\n " + comment.get('comment') + "\r\n\r\n" +
+            "管理后台：" + process.env.ADMIN_URL + "\r\n";
         request.post({
             url: 'https://push.ifking.cn/telegram/tg.php',
             form: {
@@ -92,12 +92,12 @@ exports.notice = (comment) => {
     
     if ( noticeSMS != null ) {
         let pasgURL = process.env.SITE_URL + comment.get('url');
-        let notifyContents = "原文地址：[" + pasgURL + "](" + pasgURL + ") \r\n\r\n" + 
+        let notifyContents = "原文地址：" + pasgURL + "\r\n\r\n" + 
             "评论者昵称：" + comment.get('nick') + "\r\n\r\n" + 
-            "评论者邮箱：" + comment.get('mail') + "\r\n\r\n" + 
+            "评论者邮箱： " + comment.get('mail') + "\r\n\r\n" + 
             "原文章URI：" + comment.get('url') + "\r\n\r\n" + 
-            "评论内容：" + "\r\n> " + comment.get('comment') + "\r\n\r\n" +
-            "管理后台：[" + process.env.ADMIN_URL + "](" + process.env.ADMIN_URL + ") \r\n";
+            "评论内容：" + "\r\n " + comment.get('comment') + "\r\n\r\n" +
+            "管理后台：" + process.env.ADMIN_URL + "\r\n";
         request.post({
             url: 'https://push.ifking.cn/sms/sms.php',
             form: {
