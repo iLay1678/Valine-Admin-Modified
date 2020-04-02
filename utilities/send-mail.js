@@ -106,7 +106,7 @@ exports.notice = (comment) => {
 		request.post({
 			url: sms_url,
 			form: {
-				text: '你的博客有新的评论啦',
+				text: `${SITE_NAME} 有新评论了喵\n\n@${nickExcerpt}：\n${commentExcerpt}`,
 				desp: postUrl
 			}
 		}, function (error, response, body) {
