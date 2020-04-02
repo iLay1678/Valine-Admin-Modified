@@ -67,20 +67,22 @@ exports.notice = (comment) => {
                 desp: notifyContents
             }
         }, function(error, response, body) {
-                console.log("SERVER酱通知已发送,返回结果: %s", body);
+                console.log(response.statusCode+" SERVER酱通知已发送,返回结果: %s", body);
         });
     }
     
     let token = process.env.TG_TOKEN;
+	let posturl=process.env.POST_URL;
     let chatId = process.env.TG_CHATID;
     if ( token != null) {
         request({
-        url: `https://api.telegram.org/bot${token}/sendMessage`,
+        url: posturl,
         method: 'POST',
         headers: {
             'content-type': 'application/json'
         },
         body: JSON.stringify({
+			'url':`https://api.telegram.org/bot${token}/sendMessage`,
             'chat_id': chatId,
             'text': `${SITE_NAME} 有新评论了喵\n\n@${nickExcerpt}：\n${commentExcerpt}`,
             'reply_markup': {
@@ -93,21 +95,21 @@ exports.notice = (comment) => {
             }
         })
     }, function(error, response, body) {
-            console.log("Telegram通知已发送,返回结果: %s", body);
+            console.log(response.statusCode+" Telegram通知已发送,返回结果: %s", body);
         });
     }
     
-    let noticeSMS = process.env.IS_SMS || null;
-    if ( noticeSMS != null ) {
+    let sms_url = process.env.SMS_URL || null;
+    if ( sms_url != null ) {
         let pasgURL = process.env.SITE_URL + comment.get('url');
         request.post({
-            url: 'https://push.ifking.cn/sms/sms.php',
+            url: sms_url,
             form: {
                 text: '你的博客有新的评论啦',
                 desp: postUrl
             }
         }, function(error, response, body) {
-            console.log("短信通知已发送,返回结果: %s", body);
+            console.log(response.statusCode+" 短信通知已发送,返回结果: %s", body);
         });
     }
 
