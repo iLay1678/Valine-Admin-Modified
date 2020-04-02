@@ -1,7 +1,10 @@
 'use strict';
 const nodemailer = require('nodemailer');
 const request = require('request');
-
+function Excerpt(text, len) {
+    text = text.replace(/<[^<>]+>/g, '').replace(/[ \r\n]/g, '');
+    return text.substr(0, len) + (text.length > len ? '...' : '');
+}
 let config = {
     auth: {
         user: process.env.SMTP_USER,
@@ -47,9 +50,7 @@ exports.notice = (comment) => {
         html: emailContent
     };
     
-    let noticeSCKEY = process.env.SCKEY || null;
-    let noticeTELEGRAM = process.env.IS_TELEGRAM || null;
-    let noticeSMS = process.env.IS_SMS || null;
+    let noticeSCKEY = process.env.SCKEY || null;    
     if ( noticeSCKEY != null ) {
         let pasgURL = process.env.SITE_URL + comment.get('url');
         let notifyContents = "原文地址：[" + pasgURL + "](" + pasgURL + ") \r\n\r\n" + 
@@ -70,26 +71,37 @@ exports.notice = (comment) => {
         });
     }
     
+    let token = process.env.TG_TOKEN;
+    let chatId = process.env.TG_CHATID;
+	let nickExcerpt = Excerpt(obj.get('nick'), process.env.NICK_LEN || 7);
+    let commentExcerpt = Excerpt(obj.get('comment'), process.env.COMMENT_LEN || 30);
+	let postUrl = process.env.SITE_URL + obj.get('url') + '#' + obj.get('objectId');
     if ( noticeTELEGRAM != null ) {
-        let pasgURL = process.env.SITE_URL + comment.get('url');
-        let notifyContents = "原文地址：" + pasgURL + "\r\n\r\n" + 
-            "评论者昵称：" + comment.get('nick') + "\r\n\r\n" + 
-            "评论者邮箱： " + comment.get('mail') + "\r\n\r\n" + 
-            "原文章URI：" + comment.get('url') + "\r\n\r\n" + 
-            "评论内容：" + "\r\n " + comment.get('comment') + "\r\n\r\n" +
-            "管理后台：" + process.env.ADMIN_URL + "\r\n";
-        request.post({
-            url: 'https://push.ifking.cn/telegram/tg.php',
-            form: {
-                text: '你的博客有新的评论啦',
-                desp: notifyContents
+        request({
+        url: `https://api.telegram.org/bot${token}/sendMessage`,
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            'chat_id': chatId,
+            'text': `${SITE_NAME} 有新评论了喵\n\n@${nickExcerpt}：\n${commentExcerpt}`,
+            'reply_markup': {
+                'inline_keyboard': [
+                    [{
+                        'text': '点击查看',
+                        'url': `${postUrl}`
+                    }]
+                ]
             }
-        }, function(error, response, body) {
+        })
+    }, function(error, response, body) {
             if (!error && response.statusCode == 200)
                 console.log("Telegram通知发送成功: %s", response.statusCode);
         });
     }
     
+    let noticeSMS = process.env.IS_SMS || null;
     if ( noticeSMS != null ) {
         let pasgURL = process.env.SITE_URL + comment.get('url');
         let notifyContents = process.env.SITE_URL + comment.get('url')+'#'+comment.get('objectId');
