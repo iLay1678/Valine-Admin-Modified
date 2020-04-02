@@ -12,6 +12,7 @@
 | NICK_LEN | [可选] Telegram通知中昵称摘要长度，默认是 7 |
 | COMMENT_LEN | [可选] Telegram通知中评论摘要长度，默认是 30 |
 | SMS_URL | [可选] 用于发送短信通知的地址，如https://xxx.xxx/sms.php|
+| NO_EMAIL | [可选] 填写任意值可关闭博主邮件通知，只用其他通知，访客@邮件通知不受影响|
 
 ## 相关php文件
 ### post.php
