@@ -67,8 +67,7 @@ exports.notice = (comment) => {
                 desp: notifyContents
             }
         }, function(error, response, body) {
-            if (!error && response.statusCode == 200)
-                console.log("SERVER酱通知发送成功: %s", response.statusCode);
+                console.log("SERVER酱通知已发送,返回结果: %s", body);
         });
     }
     
@@ -94,8 +93,7 @@ exports.notice = (comment) => {
             }
         })
     }, function(error, response, body) {
-            if (!error && response.statusCode == 200)
-                console.log("Telegram通知发送成功: %s", response.statusCode);
+            console.log("Telegram通知已发送,返回结果: %s", body);
         });
     }
     
@@ -109,8 +107,7 @@ exports.notice = (comment) => {
                 desp: postUrl
             }
         }, function(error, response, body) {
-            if (!error && response.statusCode == 200)
-                console.log("短信通知发送成功: %s", response.statusCode);
+            console.log("短信通知已发送,返回结果: %s", body);
         });
     }
 
