@@ -94,9 +94,6 @@ if (empty($text)) {
     $json['errmsg'] = "消息标题不能为空啦";
     die(json_encode($json));
 }
-if (isset($_POST["contact"])) {
-    $contact = $_POST["contact"];
-}
 if (isset($_POST["desp"])) {
     $desp = $_POST["desp"];
 }
