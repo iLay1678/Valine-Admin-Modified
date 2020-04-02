@@ -92,6 +92,9 @@ exports.notice = (comment) => {
 						[{
 								'text': '点击查看',
 								'url': `${POST_URL}`
+							}, {
+								"text": "管理评论",
+								"url": process.env.ADMIN_URL
 							}
 						]
 					]
