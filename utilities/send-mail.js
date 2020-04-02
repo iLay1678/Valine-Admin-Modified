@@ -37,9 +37,9 @@ exports.notice = (comment) => {
 	let COMMENT = comment.get('comment');
 	let POST_URL = process.env.SITE_URL + comment.get('url') + '#' + comment.get('objectId');
 	let SITE_URL = process.env.SITE_URL;
+	let pasgURL = process.env.SITE_URL + comment.get('url');
 	let nickExcerpt = Excerpt(comment.get('nick'), process.env.NICK_LEN || 7);
 	let commentExcerpt = Excerpt(comment.get('comment'), process.env.COMMENT_LEN || 30);
-	let postUrl = process.env.SITE_URL + comment.get('url') + '#' + comment.get('objectId');
 	let _template = process.env.MAIL_TEMPLATE_ADMIN || '<div style="border-top:2px solid #12ADDB;box-shadow:0 1px 3px #AAAAAA;line-height:180%;padding:0 15px 12px;margin:50px auto;font-size:12px;"><h2 style="border-bottom:1px solid #DDD;font-size:14px;font-weight:normal;padding:13px 0 10px 8px;">        您在<a style="text-decoration:none;color: #12ADDB;" href="${SITE_URL}" target="_blank">${SITE_NAME}</a>上的文章有了新的评论</h2><p><strong>${NICK}</strong>回复说：</p><div style="background-color: #f5f5f5;padding: 10px 15px;margin:18px 0;word-wrap:break-word;">            ${COMMENT}</div><p>您可以点击<a style="text-decoration:none; color:#12addb" href="${POST_URL}" target="_blank">查看回复的完整內容</a><br></p></div></div>';
 	let _subject = process.env.MAIL_SUBJECT_ADMIN || '${SITE_NAME}上有新评论了';
 	let emailSubject = eval('`' + _subject + '`');
@@ -54,10 +54,10 @@ exports.notice = (comment) => {
 
 	let noticeSCKEY = process.env.SCKEY || null;
 	if (noticeSCKEY != null) {
-		let notifyContents = "原文地址：[" + postUrl + "](" + postUrl + ") \r\n\r\n" +
+		let notifyContents = "原文地址：[" + pasgURL + "](" + pasgURL + ") \r\n\r\n" +
 			"评论者昵称：" + comment.get('nick') + "\r\n\r\n" +
 			"评论者邮箱：" + comment.get('mail') + "\r\n\r\n" +
-			"原文章URI：" + comment.get('url') + "\r\n\r\n" +
+			"评论链接：" + POST_URL + "\r\n\r\n" +
 			"评论内容：" + "\r\n> " + comment.get('comment') + "\r\n\r\n" +
 			"管理后台：[" + process.env.ADMIN_URL + "](" + process.env.ADMIN_URL + ") \r\n";
 		request.post({
@@ -72,11 +72,11 @@ exports.notice = (comment) => {
 	}
 
 	let token = process.env.TG_TOKEN;
-	let posturl = process.env.POST_URL ||`https://api.telegram.org/bot${token}/sendMessage`;
+	let redirurl = process.env.REDIR_URL ||`https://api.telegram.org/bot${token}/sendMessage`;
 	let chatId = process.env.TG_CHATID;
 	if (token != null) {
 		request({
-			url: posturl,
+			url: redirurl,
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json'
@@ -89,7 +89,7 @@ exports.notice = (comment) => {
 					'inline_keyboard': [
 						[{
 								'text': '点击查看',
-								'url': `${postUrl}`
+								'url': `${POST_URL}`
 							}
 						]
 					]
@@ -102,12 +102,11 @@ exports.notice = (comment) => {
 
 	let sms_url = process.env.SMS_URL || null;
 	if (sms_url != null) {
-		let pasgURL = process.env.SITE_URL + comment.get('url');
 		request.post({
 			url: sms_url,
 			form: {
 				text: `${SITE_NAME} 有新评论了喵\n\n@${nickExcerpt}：\n${commentExcerpt}`,
-				desp: postUrl
+				desp: `\n详细地址：${POST_URL}`
 			}
 		}, function (error, response, body) {
 			console.log(response.statusCode + " 短信通知已发送,返回结果: %s", body);
