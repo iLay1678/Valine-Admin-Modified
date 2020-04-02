@@ -120,6 +120,8 @@ exports.notice = (comment) => {
 	}
 	let noemail = process.env.NO_EMAIL;
 	if (noemail != null) {
+		console.log("博主邮件通知未开启");
+	} else {
 		transporter.sendMail(mailOptions, (error, info) => {
 			if (error) {
 				return console.log(error);
@@ -128,8 +130,6 @@ exports.notice = (comment) => {
 			comment.set('isNotified', true);
 			comment.save();
 		});
-	} else {
-		console.log("博主邮件通知未开启");
 	}
 
 }
