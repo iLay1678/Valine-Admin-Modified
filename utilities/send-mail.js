@@ -74,7 +74,7 @@ exports.notice = (comment) => {
     let token = process.env.TG_TOKEN;
     let chatId = process.env.TG_CHATID;
 	let nickExcerpt = Excerpt(comment.get('nick'), process.env.NICK_LEN || 7);
-    let commentExcerpt = Excerpt(commentget('comment'), process.env.COMMENT_LEN || 30);
+    let commentExcerpt = Excerpt(comment.get('comment'), process.env.COMMENT_LEN || 30);
 	let postUrl = process.env.SITE_URL + comment.get('url') + '#' + obj.get('objectId');
     if ( token != null && chatId != null) {
         request({
