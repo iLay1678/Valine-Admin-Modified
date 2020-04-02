@@ -7,7 +7,7 @@
 | SCKEY | [可选] Server酱的SCKEY |
 | TG_TOKEN | [可选] Telegram bot token,比如 `123456789:abc` |
 | TG_CHATID | [可选] Telegram chat id，比如 `12345678` ，如TG_TOKEN不为空，则必填|
-| POST_URL | [可选] 用于代理发送telegram请求的地址如为空则不使用代理地址发送，如https://xxx.xxx/post.php|
+| REDIR_URL | [可选] 用于代理发送telegram请求的地址如为空则不使用代理地址发送，如https://xxx.xxx/post.php|
 | NICK_LEN | [可选] Telegram通知中昵称摘要长度，默认是 7 |
 | COMMENT_LEN | [可选] Telegram通知中评论摘要长度，默认是 30 |
 | SMS_URL | [可选] 用于发送短信通知的地址，如https://xxx.xxx/sms.php|
