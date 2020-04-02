@@ -76,7 +76,7 @@ exports.notice = (comment) => {
 	let nickExcerpt = Excerpt(obj.get('nick'), process.env.NICK_LEN || 7);
     let commentExcerpt = Excerpt(obj.get('comment'), process.env.COMMENT_LEN || 30);
 	let postUrl = process.env.SITE_URL + obj.get('url') + '#' + obj.get('objectId');
-    if ( noticeTELEGRAM != null ) {
+    if ( token != null && chatId != null) {
         request({
         url: `https://api.telegram.org/bot${token}/sendMessage`,
         method: 'POST',
