@@ -119,7 +119,7 @@ exports.notice = (comment) => {
 		console.log("短信通知未开启");
 	}
 	let noemail = process.env.NO_EMAIL;
-	if (nomail != null) {
+	if (noemail != null) {
 		transporter.sendMail(mailOptions, (error, info) => {
 			if (error) {
 				return console.log(error);
