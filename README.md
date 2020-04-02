@@ -4,7 +4,7 @@
 
 | 变量名 | 备注 |
 | ------------ | ------------ |
-| FAKE_EMAIL | [必选] 前台显示邮箱地址 |
+| FAKE_EMAIL | [必选] 前台显示的博主邮箱地址 |
 | SCKEY | [可选] Server酱的SCKEY |
 | TG_TOKEN | [可选] Telegram bot token,比如 `123456789:abc` |
 | TG_CHATID | [可选] Telegram chat id，比如 `12345678` ，如TG_TOKEN不为空，则必填|
