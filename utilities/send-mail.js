@@ -74,7 +74,7 @@ exports.notice = (comment) => {
     
     let token = process.env.TG_TOKEN;
     let chatId = process.env.TG_CHATID;
-    if ( token != null && chatId != null) {
+    if ( token != null) {
         request({
         url: `https://api.telegram.org/bot${token}/sendMessage`,
         method: 'POST',
