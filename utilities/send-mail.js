@@ -68,6 +68,7 @@ exports.notice = (comment) => {
 			}
 		}, function (error, response, body) {
 			console.log(response.statusCode + " SERVER酱通知已发送,返回结果: %s", body);
+			comment.set('isNotified', true);
 		});
 	} else {
 		console.log("SERVER酱通知未开启");
@@ -102,9 +103,10 @@ exports.notice = (comment) => {
 			})
 		}, function (error, response, body) {
 			console.log(response.statusCode + " Telegram通知已发送,返回结果: %s", body);
+			comment.set('isNotified', true);
 		});
 	} else {
-		console.log("Telegram酱通知未开启");
+		console.log("Telegram通知未开启");
 	}
 
 	let sms_url = process.env.SMS_URL || null;
@@ -117,6 +119,7 @@ exports.notice = (comment) => {
 			}
 		}, function (error, response, body) {
 			console.log(response.statusCode + " 短信通知已发送,返回结果: %s", body);
+			comment.set('isNotified', true);
 		});
 	} else {
 		console.log("短信通知未开启");
@@ -131,10 +134,9 @@ exports.notice = (comment) => {
 			}
 			console.log('博主通知邮件成功发送: %s', info.response);
 			comment.set('isNotified', true);
-			comment.save();
 		});
 	}
-
+			comment.save();
 }
 
 exports.send = (currentComment, parentComment) => {
